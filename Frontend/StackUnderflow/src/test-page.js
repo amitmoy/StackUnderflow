@@ -1,24 +1,24 @@
-import { useState } from "react";
 import Header from "./Components/Header";
-import Topic from "./Components/Topic";
-import { topicsData } from "./exampleTopicsData";
-
-
+import Topics from "./Components/Topics";
+import Home from "./Components/Home";
+import { Route, BrowserRouter, Routes } from "react-router-dom"
+import Layout from "./Components/Layout";
+import SearchPage from "./Components/SearchPage";
+import CreateTopic from "./Components/CreateTopic";
 
 export default function Page(){
-    const [topics, setTopics] = useState(topicsData)
-
-    function updateTopic(updatedTopic){
-        console.log('clicked')
-        setTopics((prevTopics) => {
-            return prevTopics.map(t => t.id === updatedTopic.id? updatedTopic: t)
-        })
-    }
-
     return (
         <div>
-            <Header/>
-            {topics.map(e => <Topic topic={e} key={e.id} updateTopic={updateTopic} />)}
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Layout/>}>
+                        <Route index element={<Home/>}/>
+                        <Route path='/topics' element={<Topics/>}/>
+                        <Route path='/new-question' element={<CreateTopic/>}/>
+                        <Route path='/search/:searchKey' element={<SearchPage/>}/>
+                    </Route>
+                </Routes>
+            </BrowserRouter>
         </div>
     );
 }

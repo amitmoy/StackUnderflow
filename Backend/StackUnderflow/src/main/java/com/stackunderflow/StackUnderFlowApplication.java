@@ -1,16 +1,14 @@
-package com.example.demo;
+package com.stackunderflow;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @ComponentScan("expenses")
 @SpringBootApplication
-public class DemoApplication {
+public class StackUnderFlowApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(StackUnderFlowApplication.class, args);
 	}
 }

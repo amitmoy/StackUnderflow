@@ -28,7 +28,7 @@ export default function Topic(props){
             <div className="topic--header">
                 <div className="topic--header--left">
                     <h2 className="topic--title">{title}</h2>
-                    <p className="topic--date">{`${Date(date)}`}</p>
+                    <p className="topic--date">{`${new Date(date).toString()}`}</p>
                 </div>
                 <div className="topic--header--right">
                     <AnswerCount answers={answers}/>
