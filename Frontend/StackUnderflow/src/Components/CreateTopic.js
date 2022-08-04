@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import API from "../api";
+import TagInput from "./TagInput";
+import { useNavigate } from "react-router-dom"
+import { createTopic } from "../Services/TopicService";
 
 export default function CreateTopic(){
     const [topicValues, setTopicValues] = useState({
@@ -7,9 +11,33 @@ export default function CreateTopic(){
         tags: []
     });
 
+    const navigate = useNavigate();
+    const [ errors, setErrors ] = useState([]);
+
     function submit(event){
         event.preventDefault();
-        console.log(topicValues)
+    }
+
+    function submitClicked(event){
+        const contentValue = topicValues.content
+        const titleValue = topicValues.title
+        setErrors([])
+        const newErrors = []
+
+        if(!contentValue.replace(/\s+/g, "")){
+            newErrors.push("* Content cannot be empty")
+        }
+
+        if(!titleValue.replace(/\s+/g, "")){
+            newErrors.push("* Title cannot be empty")
+        }
+
+        if(newErrors.length != 0){
+            setErrors(newErrors)
+            return;
+        }
+
+        createTopic(topicValues ,() => navigate('/topics'))
     }
 
 
@@ -27,6 +55,20 @@ export default function CreateTopic(){
         });
     }
 
+    function setTagsFunc(newTags){
+        setTopicValues((prevVal) => {
+            return(
+                {
+                    ...prevVal,
+                    tags: newTags
+                }
+            );
+        });
+    }
+
+
+
+
     return(
         <div className="createTopic--main-div">
                 <div>
@@ -35,7 +77,7 @@ export default function CreateTopic(){
             <div className="createTopic--form-div">
 
 
-                <form className="createTopic--grid-container">
+                <form className="createTopic--grid-container" onSubmit={submit}>
                     <h5 className="createTopic--grid-item-1 createTopic--title-text">
                         Title
                     </h5>
@@ -62,19 +104,19 @@ export default function CreateTopic(){
                     <h5 
                     className="createTopic--grid-item-1 createTopic--tags-text"
                     >Tags</h5>
-                    <input 
-                    name="tags" 
-                    type="text" 
-                    className="createTopic--grid-item-2 createTopic--tags"
-                    value={topicValues.tags}
-                    onChange={handleFormsChanges}
-                    />
-
-                    <button 
+                    <TagInput tags={topicValues.tags} setTagsFunc={setTagsFunc}/>
+                </form>
+                
+                <button 
                     name="submit" 
                     className="createTopic--submit"
-                    onClick={submit}>Submit</button>
-                </form>
+                    onClick={submitClicked}>Submit</button>
+
+
+                    {errors.map(err => (
+                        <p className="createTopic--error">{err}</p>
+
+                    ))}
             </div>
         </div>
     );

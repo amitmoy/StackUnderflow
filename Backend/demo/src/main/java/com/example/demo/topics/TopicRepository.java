@@ -11,9 +11,9 @@ import java.util.List;
 public interface TopicRepository extends JpaRepository<Topic, Integer> {
     @Query(value = "SELECT * " +
             "FROM topics " +
-            "WHERE EXISTS ( SELECT * " +
+            "WHERE id IN ( SELECT t.id " +
             "FROM tags t " +
-            "WHERE t.id = id AND t.tags LIKE %?1% ) " +
+            "WHERE t.tags LIKE %?1% ) " +
             "OR title LIKE %?1% OR content LIKE %?1%", nativeQuery = true)
     List<Topic> search(String searchKey);
 }

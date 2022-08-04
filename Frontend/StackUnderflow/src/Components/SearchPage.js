@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Topic from "./Topic"
 import API from "../api";
+import { getTopicsBySearch } from "../Services/TopicService";
 
 export default function SearchPage(){
     const {searchKey} = useParams();
@@ -13,25 +14,8 @@ export default function SearchPage(){
         })
     }
 
-    function mapTopicsFromServer(topicsFromServer){
-        const topics = topicsFromServer.map(t =>
-            ({
-                ...t,
-                answers: 3
-            })
-        )
-
-        setTopics(topics)
-    }
-
     useEffect(() => {
-        async function getRequest(){
-            await API.get('api/v1/topic/search/'+searchKey)
-            .then(res => mapTopicsFromServer(res.data))
-            .catch(err => console.log('error when fetching topics: ' + err));
-         }
-
-         getRequest();
+        getTopicsBySearch(searchKey, (res) => setTopics(res.data))
     }, [searchKey]);
 
     return(

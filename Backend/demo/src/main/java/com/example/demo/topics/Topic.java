@@ -1,5 +1,7 @@
 package com.example.demo.topics;
 
+import com.example.demo.answers.Answer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,4 +36,7 @@ public class Topic {
     @CollectionTable(name="tags", joinColumns=@JoinColumn(name="id"))
     @Column(name="tags")
     public List<String> tags;
+
+    @OneToMany(mappedBy="topic")
+    private List<Answer> answers;
 }

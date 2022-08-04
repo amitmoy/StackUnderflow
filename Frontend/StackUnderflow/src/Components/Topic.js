@@ -6,6 +6,18 @@ export default function Topic(props){
     //console.log(props.topic)
     const {title, content, date, answers, likes, dislikes, tags} = props.topic
     const updateTopic = props.updateTopic
+    const onClickAction = props.onClickAction;
+
+    let clickableClass = "";
+    let onClickToSet;
+
+    if(typeof onClickAction == 'undefined'){
+        onClickToSet = () => {}
+    } else {
+        onClickToSet = onClickAction;
+        clickableClass = " clickable"
+    }
+
 
     function likeTopic(){
         updateTopic(
@@ -25,13 +37,13 @@ export default function Topic(props){
 
     return(
         <div className="topic">
-            <div className="topic--header">
+            <div className={"topic--header " + clickableClass} onClick={onClickToSet}>
                 <div className="topic--header--left">
                     <h2 className="topic--title">{title}</h2>
                     <p className="topic--date">{`${new Date(date).toString()}`}</p>
                 </div>
                 <div className="topic--header--right">
-                    <AnswerCount answers={answers}/>
+                    <AnswerCount answers={answers.length}/>
                 </div>
             </div>
             <div className="topic--content">

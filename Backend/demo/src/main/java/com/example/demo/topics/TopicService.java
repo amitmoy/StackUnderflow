@@ -1,16 +1,10 @@
 package com.example.demo.topics;
 
-import org.apache.tomcat.jni.Time;
+import com.example.demo.answers.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class TopicService {
@@ -18,6 +12,7 @@ public class TopicService {
     private TopicRepository topicRepository;
 
     public int create(NewTopicRequest request) {
+
         Topic newTopic = Topic.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
@@ -25,6 +20,7 @@ public class TopicService {
                 .dislikes(Collections.emptyList())
                 .likes(Collections.emptyList())
                 .tags(request.getTags().stream().toList())
+                .answers(Collections.emptyList())
                 .build();
 
         topicRepository.save(newTopic);
@@ -34,6 +30,8 @@ public class TopicService {
     public Collection<Topic> getAll(){
         return topicRepository.findAll();
     }
+
+    public Optional<Topic> get(int id){ return topicRepository.findById(id); }
 
     public Collection<Topic> search(String searchKey){
         return topicRepository.search(searchKey);
